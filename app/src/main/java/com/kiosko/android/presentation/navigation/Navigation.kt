@@ -7,6 +7,7 @@ import androidx.navigation.compose.rememberNavController
 import com.kiosko.android.presentation.screens.home.HomeScreen
 import com.kiosko.android.presentation.screens.inventory.InventoryScreen
 import com.kiosko.android.presentation.screens.login.LoginScreen
+import com.kiosko.android.presentation.screens.sales.SalesScreen
 
 @Composable
 fun Navigation() {
@@ -46,8 +47,13 @@ fun Navigation() {
         }
 
         // Placeholder para Ventas
+        // Reemplaza el bloque vacío de Sales por este:
         composable(route = Screen.Sales.route) {
-            // Próximo paso
+            SalesScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }

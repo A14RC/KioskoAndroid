@@ -25,6 +25,9 @@ class InventoryViewModel @Inject constructor(
     private val _error = mutableStateOf<String?>(null)
     val error: State<String?> = _error
 
+    private val _operationSuccess = mutableStateOf<String?>(null)
+    val operationSuccess: State<String?> = _operationSuccess
+
     init {
         loadProducts()
     }
@@ -45,9 +48,72 @@ class InventoryViewModel @Inject constructor(
             if (result.isSuccess) {
                 _products.value = result.getOrNull() ?: emptyList()
             } else {
-                _error.value = "Error al cargar productos: ${result.exceptionOrNull()?.message}"
+                _error.value = "Error al cargar: ${result.exceptionOrNull()?.message}"
             }
             _isLoading.value = false
         }
+    }
+
+    fun createProduct(name: String, barcode: String, price: String, stock: String) {
+        val user = SessionManager.currentUser ?: return
+
+        viewModelScope.launch {
+            _isLoading.value = true
+            try {
+                val priceDouble = price.toDoubleOrNull() ?: 0.0
+                val stockInt = stock.toIntOrNull() ?: 0
+
+                val result = repository.createProduct(
+                    userId = user.userId,
+                    name = name,
+                    barcode = barcode,
+                    price = priceDouble,
+                    initialStock = stockInt
+                )
+
+                if (result.isSuccess) {
+                    _operationSuccess.value = "Producto creado exitosamente"
+                    loadProducts() // Recargar lista
+                } else {
+                    _error.value = "Error al crear: ${result.exceptionOrNull()?.message}"
+                }
+            } catch (e: Exception) {
+                _error.value = "Datos inválidos"
+            }
+            _isLoading.value = false
+        }
+    }
+
+    fun restockProduct(product: Product, quantityStr: String) {
+        val user = SessionManager.currentUser ?: return
+
+        viewModelScope.launch {
+            _isLoading.value = true
+            try {
+                val qty = quantityStr.toIntOrNull() ?: 0
+                if (qty <= 0) {
+                    _error.value = "Cantidad debe ser mayor a 0"
+                    _isLoading.value = false
+                    return@launch
+                }
+
+                val result = repository.restockProduct(user.userId, product.id, qty)
+
+                if (result.isSuccess) {
+                    _operationSuccess.value = "Stock actualizado: +$qty"
+                    loadProducts() // Recargar lista
+                } else {
+                    _error.value = "Fallo al reponer: ${result.exceptionOrNull()?.message}"
+                }
+            } catch (e: Exception) {
+                _error.value = "Error de conexión"
+            }
+            _isLoading.value = false
+        }
+    }
+
+    fun clearMessages() {
+        _error.value = null
+        _operationSuccess.value = null
     }
 }
