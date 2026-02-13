@@ -33,3 +33,9 @@ data class SaleItem(
     val productId: String,
     val quantity: Int
 )
+
+data class SalesSummary(
+    val totalSales: Double,
+    val transactionCount: Int,
+    val period: String
+)

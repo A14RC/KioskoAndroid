@@ -35,4 +35,11 @@ interface KioskoApi {
     // Sales
     @POST("api/v1/sales")
     suspend fun createSale(@Body request: CreateSaleRequestDto): SaleResponseDto
+
+    // Sales Summary (NUEVO)
+    @GET("api/v1/sales/summary")
+    suspend fun getDailySummary(
+        @Query("storeId") storeId: String,
+        @Query("date") date: String? = null // null = hoy
+    ): SalesSummaryResponseDto
 }

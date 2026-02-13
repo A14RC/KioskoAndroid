@@ -16,3 +16,10 @@ data class SaleResponseDto(
     val date: String,
     val itemCount: Int
 )
+
+data class SalesSummaryResponseDto(
+    val storeId: String,
+    val totalSales: Double,
+    val transactionCount: Int,
+    val period: String
+)

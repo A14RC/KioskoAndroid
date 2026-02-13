@@ -93,7 +93,9 @@ fun InventoryScreen(
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             } else {
                 LazyColumn(
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    // CORRECCIÓN: Agregamos padding al final para que el botón no tape nada
+                    contentPadding = PaddingValues(bottom = 80.dp)
                 ) {
                     item {
                         Text(

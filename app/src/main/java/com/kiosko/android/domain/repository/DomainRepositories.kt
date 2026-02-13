@@ -20,4 +20,6 @@ interface ProductRepository {
 
 interface SaleRepository {
     suspend fun createSale(userId: String, items: List<SaleItem>): Result<Sale>
+    // NUEVO
+    suspend fun getDailySummary(storeId: String): Result<SalesSummary>
 }

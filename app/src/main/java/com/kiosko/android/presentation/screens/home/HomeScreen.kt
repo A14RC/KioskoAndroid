@@ -1,13 +1,12 @@
 package com.kiosko.android.presentation.screens.home
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AttachMoney
-import androidx.compose.material.icons.filled.Inventory
 import androidx.compose.material.icons.filled.BarChart
+import androidx.compose.material.icons.filled.Inventory
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -62,12 +61,12 @@ fun HomeScreen(
                 modifier = Modifier.weight(1f)
             )
 
-            // Tarjeta 3: REPORTES
+            // Tarjeta 3: REPORTES (AHORA SÍ CONECTADO)
             DashboardCard(
                 title = "Reportes",
                 icon = Icons.Default.BarChart,
                 backgroundColor = Color(0xFFFF9800), // Naranja
-                onClick = { /* Próximamente */ },
+                onClick = { onNavigateTo(Screen.Reports.route) },
                 modifier = Modifier.weight(1f)
             )
         }

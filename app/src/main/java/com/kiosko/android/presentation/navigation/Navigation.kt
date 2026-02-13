@@ -8,6 +8,7 @@ import com.kiosko.android.presentation.screens.home.HomeScreen
 import com.kiosko.android.presentation.screens.inventory.InventoryScreen
 import com.kiosko.android.presentation.screens.login.LoginScreen
 import com.kiosko.android.presentation.screens.sales.SalesScreen
+import com.kiosko.android.presentation.screens.reports.ReportsScreen
 
 @Composable
 fun Navigation() {
@@ -37,7 +38,7 @@ fun Navigation() {
             )
         }
 
-        // Pantalla Inventario (NUEVA)
+        // Pantalla Inventario
         composable(route = Screen.Inventory.route) {
             InventoryScreen(
                 onNavigateBack = {
@@ -46,10 +47,18 @@ fun Navigation() {
             )
         }
 
-        // Placeholder para Ventas
-        // Reemplaza el bloque vacío de Sales por este:
+        // Pantalla Ventas
         composable(route = Screen.Sales.route) {
             SalesScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        // Pantalla Reportes (NUEVA)
+        composable(route = Screen.Reports.route) {
+            ReportsScreen(
                 onNavigateBack = {
                     navController.popBackStack()
                 }

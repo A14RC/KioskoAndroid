@@ -1,8 +1,6 @@
 package com.kiosko.android.presentation.screens.sales
 
 import android.widget.Toast
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -39,19 +37,18 @@ fun SalesScreen(
 
     val context = LocalContext.current
 
-    // Efecto para mostrar mensajes
     LaunchedEffect(saleSuccess) {
         if (saleSuccess) {
             Toast.makeText(context, "¡Venta Registrada con Éxito!", Toast.LENGTH_LONG).show()
             viewModel.resetState()
-            onNavigateBack() // Volvemos al home al terminar
+            onNavigateBack()
         }
     }
 
     LaunchedEffect(error) {
         error?.let {
             Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-            viewModel.resetState() // Limpiamos el error para que no salga de nuevo
+            viewModel.resetState()
         }
     }
 
@@ -72,7 +69,6 @@ fun SalesScreen(
             )
         },
         bottomBar = {
-            // Barra Inferior de Total y Cobrar
             if (cart.isNotEmpty()) {
                 Surface(
                     shadowElevation = 16.dp,
@@ -109,11 +105,15 @@ fun SalesScreen(
         Column(modifier = Modifier.padding(paddingValues).padding(16.dp)) {
             Text("Seleccionar Productos", fontSize = 18.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(bottom = 8.dp))
 
-            LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                contentPadding = PaddingValues(bottom = 80.dp) // Padding extra también aquí
+            ) {
                 items(allProducts) { product ->
                     ProductSaleCard(
                         product = product,
-                        qtyInCart = cart[product] ?: 0,
+                        // CORRECCIÓN: Buscamos por ID
+                        qtyInCart = cart[product.id] ?: 0,
                         onAdd = { viewModel.addToCart(product) },
                         onRemove = { viewModel.removeFromCart(product) }
                     )
@@ -146,7 +146,6 @@ fun ProductSaleCard(
                 Text("$${product.price}", color = Color.Gray)
             }
 
-            // Controles de Cantidad (+ -)
             Row(verticalAlignment = Alignment.CenterVertically) {
                 if (qtyInCart > 0) {
                     IconButton(onClick = onRemove) {

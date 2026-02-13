@@ -46,3 +46,11 @@ fun SaleItem.toDto(): SaleItemDto {
         quantity = quantity
     )
 }
+
+fun SalesSummaryResponseDto.toDomain(): SalesSummary {
+    return SalesSummary(
+        totalSales = totalSales,
+        transactionCount = transactionCount,
+        period = period
+    )
+}

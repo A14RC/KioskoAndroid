@@ -108,4 +108,13 @@ class SaleRepositoryImpl @Inject constructor(
             Result.failure(e)
         }
     }
+
+    override suspend fun getDailySummary(storeId: String): Result<SalesSummary> {
+        return try {
+            val response = api.getDailySummary(storeId)
+            Result.success(response.toDomain())
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 }
