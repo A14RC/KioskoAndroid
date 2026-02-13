@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.kiosko.android.presentation.screens.home.HomeScreen
+import com.kiosko.android.presentation.screens.inventory.InventoryScreen
 import com.kiosko.android.presentation.screens.login.LoginScreen
 
 @Composable
@@ -19,7 +20,6 @@ fun Navigation() {
         composable(route = Screen.Login.route) {
             LoginScreen(
                 onLoginSuccess = {
-                    // Al loguearse, vamos al Home y borramos el Login del historial (para que 'Atrás' no vuelva al login)
                     navController.navigate(Screen.Home.route) {
                         popUpTo(Screen.Login.route) { inclusive = true }
                     }
@@ -27,7 +27,7 @@ fun Navigation() {
             )
         }
 
-        // Pantalla Home
+        // Pantalla Home (Dashboard)
         composable(route = Screen.Home.route) {
             HomeScreen(
                 onNavigateTo = { route ->
@@ -36,12 +36,18 @@ fun Navigation() {
             )
         }
 
-        // Placeholders para futuras pantallas (para que no de error al clicar)
+        // Pantalla Inventario (NUEVA)
         composable(route = Screen.Inventory.route) {
-            // Aquí pondremos el inventario en el siguiente paso
+            InventoryScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                }
+            )
         }
+
+        // Placeholder para Ventas
         composable(route = Screen.Sales.route) {
-            // Aquí pondremos las ventas
+            // Próximo paso
         }
     }
 }

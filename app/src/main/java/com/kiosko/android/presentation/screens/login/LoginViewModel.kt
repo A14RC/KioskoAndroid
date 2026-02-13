@@ -4,6 +4,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kiosko.android.core.utils.SessionManager
 import com.kiosko.android.domain.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -50,6 +51,8 @@ class LoginViewModel @Inject constructor(
             val result = repository.login(_username.value, _password.value)
 
             if (result.isSuccess) {
+
+                SessionManager.currentUser = result.getOrNull()
                 _loginSuccess.value = true
             } else {
                 _error.value = "Error: Credenciales incorrectas o fallo de red"
